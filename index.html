@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#082033">
-<title>AquaLogic Beta 10 — Complete Site Maps</title>
+<title>AquaLogic Beta 10.2 — Adaptive Layout</title>
 <style>
 :root{
   --navy:#082033; --navy2:#0d2c43; --blue:#22a6f2; --green:#2fbf71; --amber:#efb949; --red:#dd5d5d;
@@ -316,6 +316,145 @@ footer{color:var(--muted);font-size:.86rem;padding:8px 2px}
 .schedule-empty strong{display:block;color:var(--text);font-size:1.05rem;margin-bottom:6px}
 @media(max-width:980px){.schedule-card{grid-template-columns:1fr}.schedule-actions{justify-content:flex-start}}
 @media(max-width:600px){.schedule-form .form-grid{grid-template-columns:1fr}.schedule-day{flex:1;min-width:60px;justify-content:center}.schedule-actions .button{flex:1}}
+
+/* AquaLogic 10.2 — screen-size-responsive interface. CSS adapts to usable
+   viewport AND component width, not to a device brand or model. */
+:root{--live-viewport-h:100dvh;--live-viewport-w:100vw;--sidebar-width:clamp(248px,19vw,290px)}
+html{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:clip}
+.app{grid-template-columns:var(--sidebar-width) minmax(0,1fr)}
+.main,.workspace,.content,.hero,.grid-2,.grid-3,.grid-4,.kpis,.status-row,.action-grid,.form-grid,.schedule-card,.map-layout,.issue-grid{min-width:0}
+.content{width:100%;max-width:1720px;margin-inline:auto}
+.card,.kpi,.plot-card,.issue-card,.zone,.schedule-card,.weekly-day{min-width:0;overflow-wrap:anywhere}
+.card :where(img,svg){max-width:100%}
+.hero{grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr)}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpis,.action-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,205px),1fr))}
+.status-row{grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
+.zone{grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,.8fr)) auto}
+.topbar{min-width:0;align-content:center;padding:12px clamp(12px,1.5vw,24px);gap:10px;isolation:isolate}
+.search{min-width:160px;max-width:100%}.search input{min-width:0;width:100%}
+.top-actions{min-width:0;justify-content:flex-end}.top-actions .pill{min-height:44px}
+.button,.pill,.action-btn,.menu-btn,.map-pin,.aqua-map-control{touch-action:manipulation}
+.button,.schedule-actions .button{min-height:44px}
+.sidebar{min-width:0;overscroll-behavior:contain;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.sidebar-close,.nav-backdrop{display:none}
+.aqua-map-card,.map-layout,.map-stage,.aqua-map-viewport,.aqua-map-home{min-width:0;max-width:100%}
+.aqua-map-viewport{height:clamp(330px,calc(var(--live-viewport-h) * .49),620px)}
+.aqua-map-home .aqua-map-viewport{height:clamp(320px,calc(var(--live-viewport-h) * .48),600px)}
+.aqua-map-viewport svg{max-width:none} /* maintain SVG viewBox scaling for independent pan/zoom */
+.aqua-map-viewport svg .aqua-pin,.aqua-map-viewport svg .aqua-seedplot{touch-action:none}
+.map-layer-tools,.aqua-map-header,.aqua-map-tools{min-width:0}
+.weekly-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr))}
+.tour-rail{top:82px;max-height:calc(var(--live-viewport-h) - 100px)}
+.workspace{min-width:0}
+.workspace.tour-open{grid-template-columns:minmax(0,1fr) minmax(280px,335px)}
+.workspace.tour-open .content{container-type:inline-size}
+@container (max-width:780px){
+ .hero,.grid-2,.grid-3,.grid-4,.issue-grid,.form-grid{grid-template-columns:1fr}
+ .kpis,.action-grid,.status-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .zone{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .weekly-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .map-layout{grid-template-columns:1fr}
+}
+@container (max-width:510px){
+ .kpis,.action-grid,.status-row,.weather-row,.zone{grid-template-columns:1fr}
+ .schedule-card,.issue,.schedule-form .form-grid{grid-template-columns:1fr}
+}
+@media(max-width:1380px){
+ .hero{grid-template-columns:minmax(0,1fr) minmax(290px,.86fr)}
+ .zone{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .map-layout{grid-template-columns:1fr}
+ .device-list{max-height:300px}
+}
+/* Phones and tablets use an off-canvas menu and dedicate the width to data. */
+@media(max-width:1100px){
+ .app{grid-template-columns:minmax(0,1fr)}
+ .main{width:100%;min-width:0}
+ .sidebar{position:fixed;inset:0 auto 0 0;width:min(340px,88vw);height:var(--live-viewport-h);z-index:50;transform:translateX(-105%);transition:transform .22s ease;box-shadow:15px 0 45px rgba(0,0,0,.18)}
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex;min-height:44px;align-items:center;justify-content:center}
+ .sidebar-close{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:12px;min-height:44px;padding:8px 12px;margin-left:auto;font-weight:800;cursor:pointer}
+ .nav-backdrop{display:block;position:fixed;inset:0;background:rgba(5,24,39,.5);z-index:49;border:0;padding:0;cursor:pointer}
+ .topbar{padding:12px 16px}
+ .hero{grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr)}
+ .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .zone{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .content{padding:clamp(12px,2vw,22px)}
+}
+@media(max-width:800px){
+ .hero,.grid-2,.grid-3,.grid-4,.form-grid,.issue-grid,.map-layout,.weather-row{grid-template-columns:minmax(0,1fr)}
+ .kpis,.action-grid,.status-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .topbar{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+ .menu-btn{grid-column:1}.search{grid-column:2;min-width:0}
+ .top-actions{grid-column:1/-1;justify-content:stretch;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:8px}
+ .top-actions .pill{padding:10px 8px;font-size:.83rem;white-space:normal;line-height:1.15;min-width:0}
+ .top-actions .pill .label-long{display:none}
+ .top-actions .pill .label-short{display:inline}
+ .topbar #searchResults{grid-column:1/-1}
+ .sidebar{width:min(320px,90vw)}
+ .aqua-map-viewport{height:clamp(280px,calc(var(--live-viewport-h) * .44),520px)}
+ .aqua-map-home .aqua-map-viewport{height:clamp(280px,calc(var(--live-viewport-h) * .43),520px)}
+ .aqua-map-header{align-items:stretch}.aqua-map-tools{justify-content:flex-start}
+ .map-layer-tools .pill{flex:1 1 auto}
+ .weekly-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .workspace.tour-open{grid-template-columns:1fr}
+ .tour-rail{position:static;grid-row:1;margin:12px 12px 0;max-height:none}
+}
+@media(max-width:520px){
+ .topbar{padding:10px 12px;gap:8px}
+ .search{padding:0 10px;border-radius:14px}
+ .search input{padding:12px 0;font-size:16px} /* avoid iOS keyboard zoom */
+ .pill{border-radius:12px}
+ .card{padding:15px;border-radius:18px}
+ .content{padding:12px;gap:13px}
+ .hero,.grid-2,.grid-3,.grid-4,.form-grid,.issue-grid,.status-row,.action-grid,.weather-row,.zone,.schedule-card{grid-template-columns:minmax(0,1fr)}
+ .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .kpi{padding:12px}.kpi .value{font-size:clamp(1.25rem,5vw,1.6rem)}
+ .big{font-size:clamp(1.35rem,6vw,2rem);line-height:1.15}
+ .action-btn{padding:16px;min-height:94px}
+ .aqua-map-tools{display:flex;gap:5px}.aqua-map-control{min-width:44px;height:44px;padding:0 9px}
+ .aqua-map-header h3{line-height:1.3}
+ .aqua-map-viewport{height:clamp(270px,calc(var(--live-viewport-h) * .42),440px);border-radius:14px}
+ .aqua-map-home .aqua-map-viewport{height:clamp(270px,calc(var(--live-viewport-h) * .41),440px)}
+ .map-stage{min-height:280px;height:330px}
+ .map-caption{font-size:.72rem}.aqua-map-foot{align-items:start}
+ .schedule-actions{justify-content:flex-start}.schedule-actions .button{flex:1 1 42%;min-width:0}
+ .schedule-form .form-grid{grid-template-columns:minmax(0,1fr)}
+ .schedule-day{min-width:0;flex:1 1 calc(25% - 8px)}
+ .weather-icon-action{font-size:.8rem;padding:9px 10px}
+ .weekly-forecast{padding:14px}
+ .weekly-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .tour-rail{margin:10px 10px 0;padding:14px}
+ .tour-nav button{min-height:46px}
+ .device-card .actions a,.device-card .actions button{flex:1 1 100%;min-width:0}
+ .toast{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:none}
+}
+@media(max-width:350px){
+ .top-actions .pill{font-size:.76rem;padding:8px 5px}
+ .kpis{grid-template-columns:minmax(0,1fr)}
+ .weekly-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .weekly-day{padding:10px 7px}
+}
+/* Compact landscape phones should still have room for the map and tutorial. */
+@media(max-height:520px) and (orientation:landscape) and (max-width:1100px){
+ .topbar{position:relative}
+ .sidebar{overflow-y:auto}
+ .quick-tip{display:none}
+ .aqua-map-viewport,.aqua-map-home .aqua-map-viewport{height:clamp(230px,calc(var(--live-viewport-h) * .68),355px)}
+ .map-stage{height:300px;min-height:250px}
+ .tour-rail{position:static;max-height:none}
+}
+/* Keyboard/focus, color and motion accessibility */
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #0c8bc9;outline-offset:2px}
+@media(pointer:coarse){.nav button,.device-row,.map-layer-tools button{min-height:48px}.map-pin{min-height:48px;min-width:48px}}
+@media(prefers-reduced-motion:reduce){.content,.sidebar,.action-btn,.map-pin,.aqua-map-world{animation:none!important;transition:none!important}}
+@media print{.sidebar,.topbar,.tour-rail,.nav-backdrop{display:none!important}.app{display:block}.content{max-width:none}}
+.label-short{display:none}
+
 </style>
 </head>
 <body>
@@ -509,8 +648,8 @@ function searchIndex(){const s=site(); const pages=[
  return [...pages,...zones,...plots,...devices,...tips];
 }
 function pageTitle(){return ({home:'Home',zones:'Site Zones',watering:'Watering',equipment:'Field Map',issues:'Issues',tutorial:'Tutorial',settings:'Settings'}[state.route]||'AquaLogic')}
-function render(){app.innerHTML=`<aside class="sidebar ${state.mobileNav?'open':''}" id="sidebar">${sidebarHTML()}</aside><main class="main"><div class="topbar">${topbarHTML()}</div><div class="workspace ${tour.active?'tour-open':''}"><div class="content" id="content">${pageHTML()}</div>${tour.active?tourHTML():''}</div></main>`; bind(); setupMapInteractions(); updateRunDisplays(); if(state.firstRun){state.firstRun=false;save();}}
-function sidebarHTML(){return `<div class="brand"><img src="${logo}" alt="AquaLogic logo"><div><h1>AquaLogic</h1><small>Beta 10.1 • Farmer Edition</small></div></div>
+function render(){app.innerHTML=`${state.mobileNav?'<button type="button" id="navBackdrop" class="nav-backdrop" aria-label="Close navigation"></button>':''}<aside class="sidebar ${state.mobileNav?'open':''}" id="sidebar">${sidebarHTML()}</aside><main class="main"><div class="topbar">${topbarHTML()}</div><div class="workspace ${tour.active?'tour-open':''}"><div class="content" id="content">${pageHTML()}</div>${tour.active?tourHTML():''}</div></main>`; bind(); setupMapInteractions(); updateRunDisplays(); if(state.firstRun){state.firstRun=false;save();}}
+function sidebarHTML(){return `<div class="brand"><img src="${logo}" alt="AquaLogic logo"><div><h1>AquaLogic</h1><small>Beta 10.2 • Adaptive Edition</small></div><button type="button" class="sidebar-close" id="closeMobileNav" aria-label="Close menu">✕</button></div>
 <div class="site-picker" data-tour="site-picker"><label>Current site</label><select id="siteSelect">${state.sites.map(s=>`<option value="${s.id}" ${s.id===state.currentSite?'selected':''}>${esc(s.name)}</option>`).join('')}</select></div>
 <nav class="nav">
 ${navBtn('home','🏠','Home')}
@@ -531,7 +670,7 @@ function searchResultsHTML(query){
 }
 function topbarHTML(){const query=state.search;
 return `${state.mobileNav?``:`<button class="menu-btn" id="menuBtn">☰ Menu</button>`}<div class="search" data-tour="search"><span>🔎</span><input id="searchInput" type="search" placeholder="Search pages, zones, equipment or help…" value="${esc(query)}" autocomplete="off" aria-controls="searchResults" aria-label="Search AquaLogic"></div>
-<div class="top-actions"><button class="pill" id="unitToggle">Units: ${state.unit==='ha'?'Hectares':'Square metres'}</button><button class="pill" id="weatherRefresh">Refresh forecast</button><button class="pill primary" id="quickTour">Start tutorial</button></div>
+<div class="top-actions"><button class="pill" id="unitToggle" aria-label="Switch area units"><span class="label-long">Units: ${state.unit==='ha'?'Hectares':'Square metres'}</span><span class="label-short">${state.unit==='ha'?'ha':'m²'}</span></button><button class="pill" id="weatherRefresh" aria-label="Refresh weather forecast"><span class="label-long">Refresh forecast</span><span class="label-short">↻ Weather</span></button><button class="pill primary" id="quickTour" aria-label="Start interactive tutorial"><span class="label-long">Start tutorial</span><span class="label-short">? Guide</span></button></div>
 <div id="searchResults" class="search-results card" role="region" aria-label="Search results" style="width:100%" ${query.trim()?'':'hidden'}>${searchResultsHTML(query)}</div>`;
 }
 function updateSearchResults(){
@@ -1024,6 +1163,10 @@ function greeting(){const h=new Date().getHours(); return h<12?'morning':h<18?'a
 function bind(){
  document.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>{state.route=b.dataset.route; state.mobileNav=false; save();window.scrollTo(0,0);render()});
  const menu=document.getElementById('menuBtn'); if(menu) menu.onclick=()=>{state.mobileNav=!state.mobileNav; render()};
+  for(const id of ['closeMobileNav','navBackdrop']){
+   const close=document.getElementById(id);if(close)close.onclick=()=>{state.mobileNav=false;render();document.getElementById('menuBtn')?.focus({preventScroll:true});};
+  }
+
  const ss=document.getElementById('siteSelect'); if(ss) ss.onchange=(e)=>{state.currentSite=e.target.value;weeklyForecastOpen=false;save();render();showToast('Site changed. Updating its forecast.');refreshWeather()};
  const search=document.getElementById('searchInput');
  if(search){
@@ -1254,6 +1397,47 @@ function bind(){
  </aside>`;}
  document.addEventListener('click',e=>{if(e.target.id==='nextTour') nextTour(); if(e.target.id==='prevTour') prevTour(); if(e.target.id==='skipTour'||e.target.id==='closeTour') closeTour(); if(e.target.id==='sidebar'&&state.mobileNav){state.mobileNav=false; render();}});
  window.addEventListener('storage',event=>{if(event.key===KEY){state=load();if(!state.sites.some(si=>si.plots.some(p=>p.id===selectedPlot)))selectedPlot='';render();showToast('Site data updated from another tab.');}});
+ // Use CSS for layout; update viewport dimensions without rebuilding the app or
+ // interrupting a map drag, text input, or real-time simulated run countdown.
+ const docRoot=document.documentElement;
+ let pendingViewportFrame=0;
+ function measureAvailableViewport(){
+  pendingViewportFrame=0;
+  const vv=window.visualViewport;
+  const width=Math.max(280,Math.round(vv?.width||window.innerWidth));
+  const height=Math.max(200,Math.round(vv?.height||window.innerHeight));
+  docRoot.style.setProperty('--live-viewport-h',`${height}px`);
+  docRoot.style.setProperty('--live-viewport-w',`${width}px`);
+  const layout=width<=520?'phone':width<=1100?'tablet':'desktop';
+  docRoot.dataset.screenLayout=layout;
+  docRoot.dataset.orientation=width>height?'landscape':'portrait';
+  if(width>1100 && state.mobileNav){state.mobileNav=false;document.querySelector('#sidebar')?.classList.remove('open');document.querySelector('#navBackdrop')?.remove();}
+  // No render() here: user input and the current countdown must be preserved.
+ }
+ function scheduleViewportMeasure(){if(!pendingViewportFrame)pendingViewportFrame=requestAnimationFrame(measureAvailableViewport)}
+ window.addEventListener('resize',scheduleViewportMeasure,{passive:true});
+ window.addEventListener('orientationchange',scheduleViewportMeasure,{passive:true});
+ window.visualViewport?.addEventListener('resize',scheduleViewportMeasure,{passive:true});
+ let mapResizeObserver=null;
+ function watchVisibleMap(){
+  mapResizeObserver?.disconnect();
+  mapResizeObserver=new ResizeObserver(entries=>{
+   if(!entries.length)return;
+   const v=entries[0].target.getBoundingClientRect();
+   const c=cameraFor();
+   if(c.scale<=1){c.x=0;c.y=0;}else{
+    const bx=(c.scale-1)*v.width/2+18,by=(c.scale-1)*v.height/2+18;
+    c.x=Math.max(-bx,Math.min(bx,c.x));c.y=Math.max(-by,Math.min(by,c.y));
+   }
+   updateCamera();
+  });
+  const vp=document.querySelector('[data-map-viewport]');if(vp)mapResizeObserver.observe(vp);
+ }
+ // Original render logic is preserved; track newly rendered map nodes only.
+ const originalSetupMapInteractions=setupMapInteractions;
+ setupMapInteractions=function(){originalSetupMapInteractions();watchVisibleMap()};
+ state.mobileNav=false;
+ measureAvailableViewport();
  reconcileRuns();render();startWallClock(); if(navigator.onLine) refreshWeather();
 })();
 </script>
